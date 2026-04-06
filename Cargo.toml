@@ -7,7 +7,7 @@ license = "MIT OR Apache-2.0"
 
 [dependencies]
 comp-cat-rs = "0.5"
-hdl-cat = { path = "../hdl-cat/crates/hdl-cat" }
+hdl-cat = { version = "0.1", path = "../hdl-cat/crates/hdl-cat" }
 
 [lints.clippy]
 all = { level = "deny", priority = -1 }

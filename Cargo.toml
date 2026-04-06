@@ -2,13 +2,12 @@
 name = "msu-256"
 version = "0.1.0"
 edition = "2024"
-description = "256-bit Ozturk Modular Squaring Unit on RHDL and comp-cat-rs"
+description = "256-bit Ozturk Modular Squaring Unit on hdl-cat and comp-cat-rs"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-comp-cat-rs = { path = "../comp-cat-rs" }
-rhdl = { git = "https://github.com/samitbasu/rhdl", rev = "c99d5cc53269a247bbc675d0fbd766991d409f56" }
-rhdl-fpga = { git = "https://github.com/samitbasu/rhdl", rev = "c99d5cc53269a247bbc675d0fbd766991d409f56" }
+comp-cat-rs = "0.5"
+hdl-cat = { path = "../hdl-cat/crates/hdl-cat" }
 
 [lints.clippy]
 all = { level = "deny", priority = -1 }

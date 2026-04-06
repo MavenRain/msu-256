@@ -1,18 +1,16 @@
-//! RHDL circuit definitions for the MSU.
+//! hdl-cat circuit definitions for the MSU.
 //!
-//! Due to RHDL's 128-bit `Bits<N>` limit, full 256-bit MSU operations
-//! require composite types.  This module provides:
+//! Unlike the previous RHDL backend, hdl-cat lifts the 128-bit
+//! `Bits<N>` ceiling, so full 256-bit MSU operations become
+//! expressible as `#[kernel]` functions.  This module provides:
 //!
-//! - A minimal [`demo::DemoCircuit`] demonstrating the RHDL `Synchronous`
-//!   pattern with a DFF-held state.  This is the scaffolding a full MSU
-//!   kernel would follow.
-//! - A [`driver`] layer that wraps RHDL's `.run()` in comp-cat-rs `Io`,
-//!   so hardware simulation composes with the rest of the crate's
-//!   effectful machinery.
-//!
-//! The full MSU squarer and reducer as RHDL kernels remain future work:
-//! they require composing the 17-coefficient polynomial operations at
-//! the bit level within RHDL's kernel subset.
+//! - A [`demo`] module with a 64-bit free-running counter that
+//!   demonstrates the hdl-cat `Sync` machine pattern, including
+//!   cycle-accurate simulation and Verilog emission.
+//! - A [`driver`] layer that wraps hdl-cat's `Testbench` and
+//!   `verilog::emit_sync_graph` in comp-cat-rs `Io`, so hardware
+//!   simulation and code generation compose with the rest of the
+//!   crate's effectful pipelines.
 
 pub mod demo;
 pub mod driver;

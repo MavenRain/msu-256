@@ -4,7 +4,6 @@
 //! No `unwrap`, no `panic`, no `thiserror`, no `anyhow`.
 
 use comp_cat_rs::collapse::free_category::FreeCategoryError;
-use rhdl::prelude::RHDLError;
 
 /// All failure modes in the MSU crate.
 #[derive(Debug)]
@@ -45,8 +44,8 @@ pub enum Error {
     },
     /// An error from the comp-cat-rs free category.
     CircuitComposition(FreeCategoryError),
-    /// An error from the RHDL hardware simulation layer.
-    Rhdl(Box<RHDLError>),
+    /// An error from the hdl-cat hardware description layer.
+    HdlCat(Box<hdl_cat::Error>),
     /// The MSU simulation produced results differing from the golden model.
     SimulationMismatch {
         /// The iteration index where the mismatch occurred.
@@ -76,7 +75,7 @@ impl core::fmt::Display for Error {
                 write!(f, "signal type mismatch: expected {expected}, got {got}")
             }
             Self::CircuitComposition(e) => write!(f, "circuit composition error: {e}"),
-            Self::Rhdl(e) => write!(f, "rhdl error: {e}"),
+            Self::HdlCat(e) => write!(f, "hdl-cat error: {e}"),
             Self::SimulationMismatch { iteration } => {
                 write!(f, "simulation mismatch at iteration {iteration}")
             }
@@ -88,7 +87,7 @@ impl std::error::Error for Error {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match self {
             Self::CircuitComposition(e) => Some(e),
-            Self::Rhdl(e) => Some(e),
+            Self::HdlCat(e) => Some(e.as_ref()),
             Self::DivisionByZero
             | Self::ModularInverseDoesNotExist
             | Self::HexParse(_)
@@ -107,8 +106,8 @@ impl From<FreeCategoryError> for Error {
     }
 }
 
-impl From<RHDLError> for Error {
-    fn from(e: RHDLError) -> Self {
-        Self::Rhdl(Box::new(e))
+impl From<hdl_cat::Error> for Error {
+    fn from(e: hdl_cat::Error) -> Self {
+        Self::HdlCat(Box::new(e))
     }
 }
